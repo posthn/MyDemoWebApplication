@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using DemoWeb.Infrastructure.EntityFrameworkCore;
 
 namespace DemoWeb.Infrastructure.Repositories;
 

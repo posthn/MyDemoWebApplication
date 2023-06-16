@@ -1,5 +1,3 @@
-using DemoWeb.Infrastructure.EntityFrameworkCore;
-
 namespace DemoWeb.Infrastructure.Repositories;
 
 internal sealed class SQLiteRepository : RepositoryBase, ISQLiteRepository

@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using DemoWeb.Infrastructure.EntityFrameworkCore;
 
 namespace DemoWeb.Infrastructure.Repositories;
 
@@ -38,8 +37,8 @@ public static partial class DependencyInjectionExtensions
 
         var dbContext = new DbContextBase(options, models);
 
-        return services.AddScoped<ISQLiteRepository, SQLiteRepository>(
-            provider => new SQLiteRepository(dbContext)
+        return services.AddScoped<ISomeDbRepository, SomeDbRepository>(
+            provider => new SomeDbRepository(dbContext)
         );
     }
 }

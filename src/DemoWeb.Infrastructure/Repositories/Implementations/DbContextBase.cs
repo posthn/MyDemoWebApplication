@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace DemoWeb.Infrastructure.EntityFrameworkCore;
+namespace DemoWeb.Infrastructure;
 
 internal sealed class DbContextBase : DbContext
 {
     private Type[] _models;
 
-    public DbContextBase(DbContextOptions<DbContextBase> options, params Type[] models)
+    public DbContextBase(DbContextOptions<DbContextBase> options, Type[] models)
         : base(options)
     {
         if (models == null)

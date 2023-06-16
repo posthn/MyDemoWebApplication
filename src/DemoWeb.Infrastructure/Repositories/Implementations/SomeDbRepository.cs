@@ -1,11 +1,9 @@
-using DemoWeb.Infrastructure.EntityFrameworkCore;
-
 namespace DemoWeb.Infrastructure.Repositories;
 
 ///<summary>
 ///Pattern for new service implementation.
 ///</summary>
-internal sealed class SomeDbRepository : RepositoryBase
+internal sealed class SomeDbRepository : RepositoryBase, ISomeDbRepository
 {
     public SomeDbRepository(DbContextBase context)
         : base(context) { }

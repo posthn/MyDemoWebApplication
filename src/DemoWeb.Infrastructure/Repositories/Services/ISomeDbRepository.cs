@@ -3,4 +3,4 @@ namespace DemoWeb.Infrastructure.Repositories;
 ///<summary>
 ///Pattern for new service.
 ///</summary>
-public interface ISomeDbRepository : IRepository { }
+internal interface ISomeDbRepository : IRepository { }
