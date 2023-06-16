@@ -1,0 +1,16 @@
+@model IEnumerable<City>
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Index";
+}
+
+<table class="table table-sm table-bordered table-striped">
+    @foreach (var city in Model)
+    {
+        <tr>
+            <th>City:</th>
+            <td>@city.Name</td>
+        </tr>
+    }
+</table>
+<a asp-action="AddCity">Create new city</a>
