@@ -5,6 +5,25 @@ namespace DemoWeb.Infrastructure.Repositories;
 
 public static partial class DependencyInjectionExtensions
 {
+    private static IServiceCollection AddRepository<TService, TImplementation>(
+        this IServiceCollection services,
+        DbContextOptions<DbContextBase> options,
+        Type[] models
+    )
+        where TService : class, IRepository
+        where TImplementation : RepositoryBase, TService
+    {
+        var dbContext = new DbContextBase(options, models);
+
+        var constructor = typeof(TImplementation).GetConstructor(new[] { typeof(DbContextBase) });
+        if (constructor == null)
+            throw new NullReferenceException(nameof(constructor));
+
+        return services.AddScoped<TService, TImplementation>(
+            provider => (TImplementation)constructor.Invoke(new[] { dbContext })
+        );
+    }
+
     public static IServiceCollection AddSQLiteRepository(
         this IServiceCollection services,
         string connectionString,
@@ -15,11 +34,7 @@ public static partial class DependencyInjectionExtensions
             .UseSqlite(connectionString)
             .Options;
 
-        var dbContext = new DbContextBase(options, models);
-
-        return services.AddScoped<ISQLiteRepository, SQLiteRepository>(
-            provider => new SQLiteRepository(dbContext)
-        );
+        return services.AddRepository<ISQLiteRepository, SQLiteRepository>(options, models);
     }
 
     ///<summary>
@@ -32,13 +47,9 @@ public static partial class DependencyInjectionExtensions
     )
     {
         var options = new DbContextOptionsBuilder<DbContextBase>()
-        //    .UseSomeDb(connectionString)
+        //.UseSomeDb(connectionString)
         .Options;
 
-        var dbContext = new DbContextBase(options, models);
-
-        return services.AddScoped<ISomeDbRepository, SomeDbRepository>(
-            provider => new SomeDbRepository(dbContext)
-        );
+        return services.AddRepository<ISomeDbRepository, SomeDbRepository>(options, models);
     }
 }

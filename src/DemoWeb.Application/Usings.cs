@@ -1,2 +1,2 @@
 global using DemoWeb.Domain.Models;
-global using DemoWeb.Infrastructure.Repositories;
+global using DemoWeb.Infrastructure.CQRS;

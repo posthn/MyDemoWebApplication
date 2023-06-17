@@ -1,3 +1,5 @@
+using DemoWeb.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(
     new WebApplicationOptions
     {
@@ -12,6 +14,7 @@ builder.Services.AddSQLiteRepository(
     typeof(City),
     typeof(Person)
 );
+builder.Services.AddCQRS<ISQLiteRepository>(typeof(City), typeof(Person));
 
 var app = builder.Build();
 
