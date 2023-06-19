@@ -2,7 +2,7 @@ using DemoWeb.Infrastructure.Repositories;
 
 namespace DemoWeb.Infrastructure.CQRS;
 
-internal class DeleteCommandHandler<TRepository, CreateCommand, TEntity>
+internal class DeleteCommandHandler<TRepository, DeleteCommand, TEntity>
     : ICommandHandler<DeleteCommand<TEntity>, TEntity>
     where TRepository : IRepository
     where TEntity : class

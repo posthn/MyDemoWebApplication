@@ -64,6 +64,8 @@ public static partial class DependencyInjectionExtensions
 
         //...
 
+        services.AddScoped<IDispatcher, Dispatcher>();
+
         return services;
     }
 

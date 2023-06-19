@@ -1,6 +1,8 @@
 namespace DemoWeb.Infrastructure.CQRS;
 
-public interface IQuery<TEntity> { }
+public interface IQuery { }
+
+public interface IQuery<TEntity> : IQuery { }
 
 internal interface IQueryHandler<TQuery, TEntity>
     where TQuery : IQuery<TEntity>
@@ -8,7 +10,7 @@ internal interface IQueryHandler<TQuery, TEntity>
     IQueryable<TEntity> Execute(TQuery query);
 }
 
-public interface IQueryDispatcher
+internal interface IQueryDispatcher
 {
     IQueryable<TEntity> Execute<TQuery, TEntity>(TQuery query)
         where TQuery : IQuery<TEntity>;
