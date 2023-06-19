@@ -1,8 +1,8 @@
 namespace DemoWeb.Infrastructure.CQRS;
 
-public class GetWhereQuery<TEntity> : IQuery<TEntity>
+public class GetWhereQuery<TEntity> : IQuery
 {
-    internal Func<TEntity, bool> Predicate { get; }
+    public Func<TEntity, bool> Predicate;
 
     public GetWhereQuery(Func<TEntity, bool> predicate) => Predicate = predicate;
 }

@@ -11,95 +11,98 @@ public static partial class DependencyInjectionExtensions
     )
         where TRepository : IRepository
     {
-        if (models == null)
+        if (models == null || models.Length == 0)
             throw new ArgumentNullException(nameof(models));
 
         var startIndex = models.Length - 1;
 
-        services.AddTransient<ICommandDispatcher, CommandDispatcher>();
+        services.AddScoped<IDispatcher<TRepository>, Dispatcher<TRepository>>();
 
-        services.AddServices<TRepository>(
+        ///<summary>
+        ///Registering a create command handler.
+        ///</summary>
+        services.AddHandlersFor<TRepository>(
             typeof(CreateCommand<>),
-            typeof(ICommandHandler<,>),
-            typeof(CreateCommandHandler<,,>),
+            typeof(ICommandHandler<>),
+            typeof(CreateCommandHandler<,>),
             models,
             startIndex
         );
 
-        services.AddServices<TRepository>(
-            typeof(UpdateCommand<>),
-            typeof(ICommandHandler<,>),
-            typeof(UpdateCommandHandler<,,>),
-            models,
-            startIndex
-        );
-
-        services.AddServices<TRepository>(
+        ///<summary>
+        ///Registering a delete command handler.
+        ///</summary>
+        services.AddHandlersFor<TRepository>(
             typeof(DeleteCommand<>),
-            typeof(ICommandHandler<,>),
-            typeof(DeleteCommandHandler<,,>),
+            typeof(ICommandHandler<>),
+            typeof(DeleteCommandHandler<,>),
             models,
             startIndex
         );
 
-        //...
+        ///<summary>
+        ///Registering a update command handler.
+        ///</summary>
+        services.AddHandlersFor<TRepository>(
+            typeof(UpdateCommand<>),
+            typeof(ICommandHandler<>),
+            typeof(UpdateCommandHandler<,>),
+            models,
+            startIndex
+        );
 
-        services.AddTransient<IQueryDispatcher, QueryDispatcher>();
+        // Registering new command handlers.
+        // ...
 
-        services.AddServices<TRepository>(
+        ///<summary>
+        ///Registering a "GetAll" query handler.
+        ///</summary>
+        services.AddHandlersFor<TRepository>(
             typeof(GetAllQuery<>),
-            typeof(IQueryHandler<,>),
-            typeof(GetAllQueryHandler<,,>),
+            typeof(IQueryHandler<>),
+            typeof(GetAllQueryHandler<,>),
             models,
             startIndex
         );
 
-        services.AddServices<TRepository>(
+        ///<summary>
+        ///Registering a "GetWhere" query handler.
+        ///</summary>
+        services.AddHandlersFor<TRepository>(
             typeof(GetWhereQuery<>),
-            typeof(IQueryHandler<,>),
-            typeof(GetWhereQueryHandler<,,>),
+            typeof(IQueryHandler<>),
+            typeof(GetWhereQueryHandler<,>),
             models,
             startIndex
         );
 
-        //...
-
-        services.AddScoped<IDispatcher, Dispatcher>();
+        // Registering new query handlers.
+        // ...
 
         return services;
     }
 
-    private static IServiceCollection AddServices<TRepository>(
+    private static IServiceCollection AddHandlersFor<TRepository>(
         this IServiceCollection services,
         Type operationType,
         Type serviceType,
-        Type handlerType,
+        Type implementationType,
         Type[] models,
         int index
     )
         where TRepository : IRepository
     {
-        if (index < 0)
-            throw new ArgumentOutOfRangeException(nameof(index));
+        var service = serviceType.MakeGenericType(operationType.MakeGenericType(models[index]));
 
-        var service = serviceType.MakeGenericType(
-            operationType.MakeGenericType(models[index]),
-            models[index]
-        );
-
-        var implementation = handlerType.MakeGenericType(
-            typeof(TRepository),
-            operationType.MakeGenericType(models[index]),
-            models[index]
-        );
+        var implementation = implementationType.MakeGenericType(typeof(TRepository), models[index]);
 
         return index == 0
             ? services.AddTransient(service, implementation)
-            : AddServices<TRepository>(
+            : AddHandlersFor<TRepository>(
                 services,
                 operationType,
                 serviceType,
-                handlerType,
+                implementationType,
                 models,
                 (index - 1)
             );

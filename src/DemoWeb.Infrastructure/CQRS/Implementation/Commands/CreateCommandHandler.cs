@@ -2,8 +2,7 @@ using DemoWeb.Infrastructure.Repositories;
 
 namespace DemoWeb.Infrastructure.CQRS;
 
-internal class CreateCommandHandler<TRepository, CreateCommand, TEntity>
-    : ICommandHandler<CreateCommand<TEntity>, TEntity>
+internal class CreateCommandHandler<TRepository, TEntity> : ICommandHandler<CreateCommand<TEntity>>
     where TRepository : IRepository
     where TEntity : class
 {

@@ -2,15 +2,14 @@ using DemoWeb.Infrastructure.Repositories;
 
 namespace DemoWeb.Infrastructure.CQRS;
 
-internal class GetWhereQueryHandler<TRepository, GetWhereQuery, TEntity>
-    : IQueryHandler<GetWhereQuery<TEntity>, TEntity>
+internal class GetWhereQueryHandler<TRepository, TEntity> : IQueryHandler<GetWhereQuery<TEntity>>
     where TRepository : IRepository
     where TEntity : class
 {
-    private IRepository _repository;
+    public IRepository _repository;
 
     public GetWhereQueryHandler(TRepository repository) => _repository = repository;
 
-    public IQueryable<TEntity> Execute(GetWhereQuery<TEntity> query) =>
+    public IQueryable Execute(GetWhereQuery<TEntity> query) =>
         _repository.Get<TEntity>().Where(query.Predicate).AsQueryable<TEntity>();
 }

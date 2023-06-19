@@ -14,6 +14,7 @@ builder.Services.AddSQLiteRepository(
     typeof(City),
     typeof(Person)
 );
+
 builder.Services.AddCQRS<ISQLiteRepository>(typeof(City), typeof(Person));
 
 var app = builder.Build();

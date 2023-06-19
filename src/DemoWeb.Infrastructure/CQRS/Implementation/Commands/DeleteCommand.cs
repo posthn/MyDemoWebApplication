@@ -1,6 +1,6 @@
 namespace DemoWeb.Infrastructure.CQRS;
 
-public class DeleteCommand<TEntity> : ICommand<TEntity>
+public class DeleteCommand<TEntity> : ICommand
 {
     public TEntity Entity { get; }
 

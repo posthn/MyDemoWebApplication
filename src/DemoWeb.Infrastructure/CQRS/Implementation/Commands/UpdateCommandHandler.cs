@@ -2,8 +2,7 @@ using DemoWeb.Infrastructure.Repositories;
 
 namespace DemoWeb.Infrastructure.CQRS;
 
-internal class UpdateCommandHandler<TRepository, UpdateCommand, TEntity>
-    : ICommandHandler<UpdateCommand<TEntity>, TEntity>
+internal class UpdateCommandHandler<TRepository, TEntity> : ICommandHandler<UpdateCommand<TEntity>>
     where TRepository : IRepository
     where TEntity : class
 {

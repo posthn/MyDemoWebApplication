@@ -1,6 +1,6 @@
 namespace DemoWeb.Infrastructure.CQRS;
 
-public class CreateCommand<TEntity> : ICommand<TEntity>
+public class CreateCommand<TEntity> : ICommand
 {
     public TEntity Entity { get; }
 
